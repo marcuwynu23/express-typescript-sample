@@ -3,6 +3,11 @@ import express, {Request, Response} from "express";
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use((req: Request, _res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 app.get("/", (req: Request, res: Response) => {
   res.json({message: "Hello from Express + TypeScript + esbuild!"});
 });
