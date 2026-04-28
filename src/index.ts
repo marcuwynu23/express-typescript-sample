@@ -1,4 +1,6 @@
 import "./config/config";
+import "./tracer/tracer";
+import {trace} from "@opentelemetry/api";
 import express, {Request, Response} from "express";
 import pinoHttp from "pino-http";
 import {createLogger} from "./observability/logger";
@@ -28,6 +30,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/api/health", (req: Request, res: Response) => {
+  const span = trace.getActiveSpan();
+  console.log("traceId:", span?.spanContext()?.traceId);
   res.json({status: "ok", timestamp: new Date().toISOString()});
 });
 

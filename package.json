@@ -11,6 +11,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@opentelemetry/auto-instrumentations-node": "^0.73.0",
+    "@opentelemetry/exporter-trace-otlp-grpc": "^0.215.0",
+    "@opentelemetry/sdk-node": "^0.215.0",
     "@types/dotenv": "^6.1.1",
     "dotenv": "^17.4.2",
     "express": "^4.18.2",
