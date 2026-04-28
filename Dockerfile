@@ -42,7 +42,7 @@ RUN npm ci --omit=dev
 COPY --from=builder /app/dist ./dist
 
 # Expose the application port (defaulting to 3000 as per src/index.ts)
-EXPOSE 3000
+EXPOSE 5000
 
 # Start the application using the production command
 CMD ["npm", "start"]
