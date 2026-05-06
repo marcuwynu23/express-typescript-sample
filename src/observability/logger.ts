@@ -1,13 +1,11 @@
-import "../config/config";
-import pino from "pino";
+import '../config/config';
+import pino from 'pino';
 
 export function createLogger() {
-  const level =
-    process.env.LOG_LEVEL ??
-    (process.env.NODE_ENV === "test" ? "silent" : "info");
+  const level = process.env.LOG_LEVEL ?? (process.env.NODE_ENV === 'test' ? 'silent' : 'info');
 
-  const isProduction = process.env.NODE_ENV === "production";
-  const isTest = process.env.NODE_ENV === "test";
+  const isProduction = process.env.NODE_ENV === 'production';
+  const isTest = process.env.NODE_ENV === 'test';
 
   return pino({
     level,
@@ -17,11 +15,11 @@ export function createLogger() {
       ? {}
       : {
           transport: {
-            target: "pino-pretty",
+            target: 'pino-pretty',
             options: {
               colorize: true,
-              translateTime: "SYS:standard",
-              ignore: "pid,hostname",
+              translateTime: 'SYS:standard',
+              ignore: 'pid,hostname',
               singleLine: true,
             },
           },
