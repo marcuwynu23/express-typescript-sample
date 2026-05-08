@@ -25,11 +25,11 @@ app.use(metricsMiddleware);
 
 app.get('/metrics', metricsHandler);
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'Hello from Express + TypeScript + esbuild!' });
 });
 
-app.get('/api/health', (req: Request, res: Response) => {
+app.get('/api/health', (_req: Request, res: Response) => {
   const span = trace.getActiveSpan();
   console.log('traceId:', span?.spanContext()?.traceId);
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
