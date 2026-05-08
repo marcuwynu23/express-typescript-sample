@@ -1,10 +1,14 @@
-# Express + TypeScript + esbuild Sample
+<div align="center">
+  <h1>Express + TypeScript + esbuild Sample</h1>
 
-A minimal Express.js project with TypeScript and esbuild.
+  <p>A minimal Express.js project with TypeScript and esbuild.</p>
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
-[![Express](https://img.shields.io/badge/Express-4.18-green.svg)](https://expressjs.com/)
-[![esbuild](https://img.shields.io/badge/esbuild-0.19-orange.svg)](https://esbuild.github.io/)
+  <p>
+    <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.3-blue.svg" alt="TypeScript"></a>
+    <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/Express-4.18-green.svg" alt="Express"></a>
+    <a href="https://esbuild.github.io/"><img src="https://img.shields.io/badge/esbuild-0.19-orange.svg" alt="esbuild"></a>
+  </p>
+</div>
 
 ## Quick Start
 
