@@ -2,25 +2,14 @@ import './config/config';
 import './tracer/tracer';
 import { trace } from '@opentelemetry/api';
 import express, { type Request, type Response } from 'express';
-import pinoHttp from 'pino-http';
-import { createLogger } from './observability/logger';
-import { metricsHandler, metricsMiddleware } from './observability/metrics';
+import { httpLogger } from './middlewares/httpLogger';
+import { metricsHandler, metricsMiddleware } from './middlewares/metrics';
 
 const app = express();
 const port = process.env.PORT || 5000;
 const host = process.env.HOST || '0.0.0.0';
 
-const logger = createLogger();
-app.use(
-  pinoHttp({
-    logger,
-    customLogLevel: (_req, res, err) => {
-      if (err || res.statusCode >= 500) return 'error';
-      if (res.statusCode >= 400) return 'warn';
-      return 'info';
-    },
-  })
-);
+app.use(httpLogger);
 app.use(metricsMiddleware);
 
 app.get('/metrics', metricsHandler);
