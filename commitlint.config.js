@@ -59,8 +59,8 @@ module.exports = {
     'body-max-line-length': [0, 'always'],
     // Disable footer line length enforcement
     'footer-max-line-length': [0, 'always'],
-    // Footer must have a breaking change or issue reference
-    'footer-min-length': [2, 'always', 10],
+    // Disable footer minimum length enforcement
+    'footer-min-length': [0, 'always'],
     // No leading whitespace
     'header-max-length': [2, 'always', 100],
   },
