@@ -27,8 +27,8 @@ module.exports = {
     'subject-full-stop': [2, 'never', '.'],
     // Subject must be at least 10 characters long
     'subject-min-length': [2, 'always', 10],
-    // Subject must be at most 72 characters long
-    'subject-max-length': [2, 'always', 72],
+    // Subject must be at most 100 characters long
+    'subject-max-length': [2, 'always', 100],
     // Type must be lowercase
     'type-case': [2, 'always', 'lower-case'],
     // Type must not be empty
