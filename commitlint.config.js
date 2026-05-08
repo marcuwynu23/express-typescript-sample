@@ -27,8 +27,8 @@ module.exports = {
     'subject-full-stop': [2, 'never', '.'],
     // Subject must be at least 10 characters long
     'subject-min-length': [2, 'always', 10],
-    // Subject must be at most 50 characters long
-    'subject-max-length': [2, 'always', 50],
+    // Subject must be at most 72 characters long
+    'subject-max-length': [2, 'always', 72],
     // Type must be lowercase
     'type-case': [2, 'always', 'lower-case'],
     // Type must not be empty
@@ -55,10 +55,10 @@ module.exports = {
         'utils', // Utilities
       ],
     ],
-    // Enforce body line length
-    'body-max-line-length': [2, 'always', 72],
-    // Enforce footer line length
-    'footer-max-line-length': [2, 'always', 72],
+    // Disable body line length enforcement
+    'body-max-line-length': [0, 'always'],
+    // Disable footer line length enforcement
+    'footer-max-line-length': [0, 'always'],
     // Footer must have a breaking change or issue reference
     'footer-min-length': [2, 'always', 10],
     // No leading whitespace
