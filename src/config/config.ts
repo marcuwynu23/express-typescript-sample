@@ -16,6 +16,8 @@ export const config = {
   port: Number(process.env.PORT ?? 5000),
   logLevel: process.env.LOG_LEVEL ?? (isTest ? 'silent' : 'info'),
   opentelemetryUrl: process.env.OPENTELEMETRY_URL ?? 'http://localhost:4317',
+  swaggerEnabled: process.env.SWAGGER_ENABLED === 'true' ? true : false,
+  openAPISpecPath: process.env.OPEN_API_SPEC_PATH ?? '.',
 } as const;
 
 export type Config = typeof config;
