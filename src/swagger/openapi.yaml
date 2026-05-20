@@ -1,0 +1,62 @@
+openapi: 3.0.3
+
+info:
+  title: Express TypeScript API
+  version: 1.0.0
+  description: API with OpenTelemetry, metrics, and health checks
+
+servers:
+  - url: http://localhost:5000
+
+paths:
+
+  /:
+    get:
+      summary: Root endpoint
+      description: Returns a welcome message
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Hello from Express + TypeScript + esbuild!
+
+  /api/health:
+    get:
+      summary: Health check
+      description: Returns service health and timestamp
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    format: date-time
+                  traceId:
+                    type: string
+                    nullable: true
+                    example: 4bf92f3577b34da6a3ce929d0e0e4736
+
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      description: Exposes metrics for Prometheus scraping
+      responses:
+        "200":
+          description: Metrics output
+          content:
+            text/plain:
+              schema:
+                type: string
