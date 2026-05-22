@@ -1,11 +1,15 @@
 import type { Application } from 'express';
+import { implementDatabase } from './database';
+import { implementFeatures } from './features';
 import { implementHTTP } from './http';
 import { implementObservability } from './observability';
 import { implementAPIDocumentation } from './scalar/scalar';
 
 const modules: Record<string, (app: Application) => void> = {
   observability: implementObservability,
+  database: implementDatabase,
   'api-documentation': implementAPIDocumentation,
+  features: implementFeatures,
   http: implementHTTP,
 };
 
