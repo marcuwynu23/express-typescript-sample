@@ -17,12 +17,14 @@ app.get('/metrics', metricsHandler);
 app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'Hello from Express + TypeScript + esbuild!' });
 });
-
-app.get('/api/health', (_req: Request, res: Response) => {
-  const span = trace.getActiveSpan();
-  console.log('traceId:', span?.spanContext()?.traceId);
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+app.get(
+  ['/health', '/ready', '/test', '/api/health', '/api/test'],
+  (_req: Request, res: Response) => {
+    const span = trace.getActiveSpan();
+    console.log('traceId:', span?.spanContext()?.traceId);
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  }
+);
 
 setScalarMiddleware(app);
 
