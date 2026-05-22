@@ -1,5 +1,6 @@
 import { trace } from '@opentelemetry/api';
 import { type Application, type Request, type Response, Router } from 'express';
+import { itemRoutes } from '../features/item/item.routes';
 
 export function implementHTTP(app: Application) {
   const router = Router();
@@ -15,9 +16,12 @@ export function implementHTTP(app: Application) {
       res.json({ status: 'ok', timestamp: new Date().toISOString() });
     }
   );
-
   router.get(['/api', '/api/docs'], (_req: Request, res: Response) => {
     res.redirect('/docs');
   });
+
+  // CRUD routes
+  router.use('/api/items', itemRoutes);
+
   app.use(router);
 }
