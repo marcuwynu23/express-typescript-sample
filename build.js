@@ -15,20 +15,20 @@ const buildOptions = {
   external: ['pino', 'pino-worker', 'thread-stream'],
 };
 
-async function copySwagger() {
-  const swaggerPath = path.join(__dirname, 'swagger');
-  const distSwaggerPath = path.join(__dirname, 'dist', 'swagger');
+async function copyOpenAPISpec() {
+  const openAPISpecPath = path.join(__dirname, 'openapi');
+  const distOpenAPISpecPath = path.join(__dirname, 'dist', 'openapi');
 
   try {
-    await fs.stat(swaggerPath);
-    console.log('Copying swagger directory...');
-    await fs.cp(swaggerPath, distSwaggerPath, { recursive: true });
-    console.log('Swagger directory copied to dist!');
+    await fs.stat(openAPISpecPath);
+    console.log('Copying openapi directory...');
+    await fs.cp(openAPISpecPath, distOpenAPISpecPath, { recursive: true });
+    console.log('openapi directory copied to dist!');
   } catch (err) {
     if (err.code !== 'ENOENT') {
       throw err;
     }
-    console.log('Swagger directory not found, skipping...');
+    console.log('openapi directory not found, skipping...');
   }
 }
 
@@ -78,7 +78,7 @@ async function build() {
     console.log('Watching for changes...');
   } else {
     await esbuild.build(buildOptions);
-    await copySwagger();
+    await copyOpenAPISpec();
     await copyNodeModules();
     await copyEnvExample();
     console.log('Build complete!');
