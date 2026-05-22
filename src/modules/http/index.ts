@@ -1,25 +1,15 @@
-import { trace } from '@opentelemetry/api';
-import { type Application, type Request, type Response, Router } from 'express';
+import { type Application, Router } from 'express';
 import { itemRoutes } from '../features/item/item.routes';
+import { initRouterConfiguration } from './initial.http';
+
+function createRouter() {
+  const router = Router();
+  initRouterConfiguration(router);
+  return router;
+}
 
 export function implementHTTP(app: Application) {
-  const router = Router();
-
-  router.get('/', (_req: Request, res: Response) => {
-    res.json({ message: 'Hello from Express + TypeScript + esbuild!' });
-  });
-  router.get(
-    ['/health', '/ready', '/test', '/api/health', '/api/test'],
-    (_req: Request, res: Response) => {
-      const span = trace.getActiveSpan();
-      console.log('traceId:', span?.spanContext()?.traceId);
-      res.json({ status: 'ok', timestamp: new Date().toISOString() });
-    }
-  );
-  router.get(['/api', '/api/docs'], (_req: Request, res: Response) => {
-    res.redirect('/docs');
-  });
-
+  const router = createRouter();
   // CRUD routes
   router.use('/api/items', itemRoutes);
 
