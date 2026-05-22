@@ -26,6 +26,10 @@ app.get(
   }
 );
 
+app.get(['/api', '/api/docs'], (_req: Request, res: Response) => {
+  res.redirect('/docs');
+});
+
 setScalarMiddleware(app);
 
 if (require.main === module) {
