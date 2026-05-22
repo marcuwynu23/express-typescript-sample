@@ -2,7 +2,7 @@ import { apiReference } from '@scalar/express-api-reference';
 import type { Application } from 'express';
 import helmet from 'helmet';
 import path from 'path';
-import { config } from '../config/config';
+import { config } from '../../config/config';
 
 function getOpenAPIPath() {
   const base = config.openAPISpecPath;
@@ -10,7 +10,7 @@ function getOpenAPIPath() {
   return path.isAbsolute(base) ? base : path.join(process.cwd(), base, 'openapi.yaml');
 }
 
-export function setScalarMiddleware(app: Application) {
+export function implementAPIDocumentation(app: Application) {
   if (config.scalarEnabled) {
     app.get('/openapi.yaml', (_req, res) => {
       res.sendFile(getOpenAPIPath());

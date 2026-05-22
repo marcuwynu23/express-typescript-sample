@@ -1,41 +1,24 @@
-import './config/config';
-import './tracer/tracer';
-import { trace } from '@opentelemetry/api';
-import express, { type Request, type Response } from 'express';
+import * as os from 'node:os';
+import { app } from './app';
 import { config } from './config/config';
-import { httpLogger } from './middlewares/httpLogger';
-import { metricsHandler, metricsMiddleware } from './middlewares/metrics';
-import { setScalarMiddleware } from './scalar/scalar';
 
-const app = express();
+async function bootstrap() {
+  const interfaces = Object.values(os.networkInterfaces()).flat();
+  const ipv4 = interfaces.find(
+    (i) => i && i.family === 'IPv4' && !i.internal && !i.address.startsWith('127')
+  )?.address;
+  const ipv6 = interfaces.find((i) => i && i.family === 'IPv6' && !i.internal)?.address;
 
-app.use(httpLogger);
-app.use(metricsMiddleware);
-
-app.get('/metrics', metricsHandler);
-
-app.get('/', (_req: Request, res: Response) => {
-  res.json({ message: 'Hello from Express + TypeScript + esbuild!' });
-});
-app.get(
-  ['/health', '/ready', '/test', '/api/health', '/api/test'],
-  (_req: Request, res: Response) => {
-    const span = trace.getActiveSpan();
-    console.log('traceId:', span?.spanContext()?.traceId);
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
-  }
-);
-
-app.get(['/api', '/api/docs'], (_req: Request, res: Response) => {
-  res.redirect('/docs');
-});
-
-setScalarMiddleware(app);
+  app.listen(config.port, '::', () => {
+    console.log(`http://[::]:${config.port}`);
+    console.log(`http://localhost:${config.port}`);
+    if (ipv4) console.log(`http://${ipv4}:${config.port}`);
+    if (ipv6) console.log(`http://[${ipv6}]:${config.port}`);
+  });
+}
 
 if (require.main === module) {
-  app.listen(config.port, config.host, () => {
-    console.log(`Server running on http://${config.host}:${config.port}`);
-  });
+  bootstrap();
 }
 
 export { app };

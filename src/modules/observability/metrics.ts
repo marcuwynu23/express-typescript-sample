@@ -1,4 +1,4 @@
-import '../config/config';
+import '../../config/config';
 import type { Request, RequestHandler, Response } from 'express';
 import client from 'prom-client';
 

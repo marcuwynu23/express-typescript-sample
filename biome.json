@@ -80,6 +80,17 @@
     }
   },
   "javascript": {
+    "globals": [
+      "jest",
+      "describe",
+      "it",
+      "expect",
+      "beforeEach",
+      "afterEach",
+      "beforeAll",
+      "afterAll",
+      "require"
+    ],
     "formatter": {
       "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",
