@@ -20,4 +20,8 @@ export const config = {
   openAPISpecPath: process.env.OPEN_API_SPEC_PATH ?? '.',
 } as const;
 
+// Print only config variables
+console.log('\n=== Configuration Variables ===');
+console.table(config);
+
 export type Config = typeof config;
