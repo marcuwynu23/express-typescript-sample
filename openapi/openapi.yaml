@@ -1,17 +1,27 @@
 openapi: 3.0.3
 
 info:
-  title: Express TypeScript API
+  title: Node TypeScript Modular Boilerplate API
   version: 1.0.0
-  description: API with OpenTelemetry, metrics, and health checks
+  description: A modular Node.js + Express + TypeScript API with observability, CRUD operations, and API documentation
 
 servers:
   - url: http://localhost:5000
 
-paths:
+tags:
+  - name: General
+    description: Welcome and utility endpoints
+  - name: Health
+    description: Health and readiness checks
+  - name: Items
+    description: CRUD operations for items
+  - name: Observability
+    description: Metrics and monitoring
 
+paths:
   /:
     get:
+      tags: [General]
       summary: Root endpoint
       description: Returns a welcome message
       responses:
@@ -28,6 +38,7 @@ paths:
 
   /health:
     get:
+      tags: [Health]
       summary: Health check
       description: Returns service health and timestamp
       responses:
@@ -40,6 +51,7 @@ paths:
 
   /ready:
     get:
+      tags: [Health]
       summary: Readiness check
       description: Returns service readiness status
       responses:
@@ -52,6 +64,7 @@ paths:
 
   /test:
     get:
+      tags: [Health]
       summary: Test endpoint
       description: Returns service status for testing
       responses:
@@ -64,6 +77,7 @@ paths:
 
   /api/health:
     get:
+      tags: [Health]
       summary: API health check
       description: Returns service health and timestamp
       responses:
@@ -76,6 +90,7 @@ paths:
 
   /api/test:
     get:
+      tags: [Health]
       summary: API test endpoint
       description: Returns service status for testing
       responses:
@@ -88,17 +103,190 @@ paths:
 
   /metrics:
     get:
+      tags: [Observability]
       summary: Prometheus metrics
       description: Exposes metrics for Prometheus scraping
       responses:
         "200":
-          description: Metrics output
+          description: Metrics output in Prometheus text exposition format
           content:
             text/plain:
               schema:
                 type: string
 
+  /api/items:
+    get:
+      tags: [Items]
+      summary: List all items
+      description: Returns all items sorted by creation date (newest first)
+      responses:
+        "200":
+          description: List of items
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Item"
+                  count:
+                    type: integer
+                    example: 1
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags: [Items]
+      summary: Create a new item
+      description: Creates a new item with the provided data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemInput"
+      responses:
+        "201":
+          description: Item created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Item"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Name is required
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/items/{id}:
+    get:
+      tags: [Items]
+      summary: Get item by ID
+      description: Returns a single item by its ID
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      responses:
+        "200":
+          description: Item found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Item"
+        "404":
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Item not found
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags: [Items]
+      summary: Update an item
+      description: Updates an existing item with the provided data
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemUpdate"
+      responses:
+        "200":
+          description: Item updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Item"
+        "404":
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Item not found
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags: [Items]
+      summary: Delete an item
+      description: Deletes an item by its ID
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      responses:
+        "200":
+          description: Item deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Item"
+                  message:
+                    type: string
+                    example: Item deleted successfully
+        "404":
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Item not found
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
+  parameters:
+    ItemId:
+      name: id
+      in: path
+      required: true
+      description: MongoDB ObjectId of the item
+      schema:
+        type: string
+        example: 507f1f77bcf86cd799439011
+
   schemas:
     HealthResponse:
       type: object
@@ -109,3 +297,90 @@ components:
         timestamp:
           type: string
           format: date-time
+
+    Item:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        name:
+          type: string
+          example: Widget
+        description:
+          type: string
+          example: A useful widget
+        quantity:
+          type: integer
+          minimum: 0
+          example: 10
+        price:
+          type: number
+          format: float
+          minimum: 0
+          example: 29.99
+        isActive:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ItemInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: Widget
+        description:
+          type: string
+          example: A useful widget
+        quantity:
+          type: integer
+          minimum: 0
+          default: 0
+          example: 10
+        price:
+          type: number
+          format: float
+          minimum: 0
+          default: 0
+          example: 29.99
+        isActive:
+          type: boolean
+          default: true
+          example: true
+
+    ItemUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Updated Widget
+        description:
+          type: string
+          example: An updated widget
+        quantity:
+          type: integer
+          minimum: 0
+          example: 20
+        price:
+          type: number
+          format: float
+          minimum: 0
+          example: 39.99
+        isActive:
+          type: boolean
+          example: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Failed to fetch items
