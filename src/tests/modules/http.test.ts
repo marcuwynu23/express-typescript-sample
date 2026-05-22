@@ -2,6 +2,11 @@ import express from 'express';
 import request from 'supertest';
 import { implementHTTP } from '../../modules/http';
 
+// Mock the item routes to avoid Mongoose dependency
+jest.mock('../../modules/features/item/item.routes', () => ({
+  itemRoutes: require('express').Router(),
+}));
+
 describe('modules/http', () => {
   let app: express.Application;
 
