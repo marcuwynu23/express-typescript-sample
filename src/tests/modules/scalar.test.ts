@@ -25,11 +25,20 @@ describe('modules/scalar (api-documentation)', () => {
 
     it('registers GET /openapi.yaml endpoint', () => {
       // Verify the route was registered on the app
-      const routes = app._router.stack
-        .filter((layer: any) => layer.route)
-        .map((layer: any) => ({
-          path: layer.route.path,
-          method: Object.keys(layer.route.methods)[0],
+      const router = (
+        app as unknown as {
+          _router: {
+            stack: Array<{
+              route?: { path: string; methods: Record<string, boolean> };
+            }>;
+          };
+        }
+      )._router;
+      const routes = router.stack
+        .filter((layer) => layer.route)
+        .map((layer) => ({
+          path: layer.route?.path,
+          method: Object.keys(layer.route?.methods ?? {})[0],
         }));
 
       expect(routes).toContainEqual({ path: '/openapi.yaml', method: 'get' });
