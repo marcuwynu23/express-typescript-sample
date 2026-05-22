@@ -1,7 +1,7 @@
 {
   "name": "node-typescript-modular-boilerplate",
   "version": "1.0.0",
-  "description": "Express + TypeScript sample with esbuild",
+  "description": "A modular Node.js + Express + TypeScript boilerplate with observability, API documentation, and esbuild",
   "main": "dist/index.js",
   "scripts": {
     "build": "node build.js",
